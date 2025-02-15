@@ -63,6 +63,13 @@ Tool has to be installed and file ".pre-commit-config.yaml" has to be present fo
 pre-commit install
 ```
 
+4. Hopsworks
+
+```bash
+uv pip install "hopsworks[python]"
+
+```
+
 ## Usage
 
 1. New service

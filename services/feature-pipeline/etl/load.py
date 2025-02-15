@@ -1,6 +1,10 @@
 import polars as pl
-from config.config import hopsworksCredentialsConfig, hopsworksSettingsConfig
-from hopsworks_utils import HopsworksFeatureManager
+from config.config import (
+    hopsworksCredentialsConfig,
+    hopsworksSettingsConfig,
+    meteostatSettingsConfig,
+)
+from hopsworks_utils import HopsworksFeatureGroupManager, HopsworksFeatureViewManager
 from loguru import logger
 
 
@@ -26,9 +30,9 @@ def load_data_into_feature_group(
     """
 
     logger.info(
-        f'Creating HopsworksFeatureGroupManager for feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}'
+        f'Creating HopsworksFeatureGroupManager for feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}.'
     )
-    feature_group_manager = HopsworksFeatureManager(
+    feature_group_manager = HopsworksFeatureGroupManager(
         api_key=hopsworksCredentialsConfig.api_key,
         project_name=hopsworksCredentialsConfig.project_name,
         feature_group_name=hopsworksSettingsConfig.feature_group_name,
@@ -39,6 +43,20 @@ def load_data_into_feature_group(
     )
 
     logger.info(
-        f'Inserting data into feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}'
+        f'Inserting data into feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}.'
     )
     feature_group_manager.insert_data_into_feature_group(data=data)
+
+    # NOTE: Later during training and inference we will create more sophisticated features.
+    feature_view_manager = HopsworksFeatureViewManager(
+        api_key=hopsworksCredentialsConfig.api_key,
+        project_name=hopsworksCredentialsConfig.project_name,
+        feature_view_name=hopsworksSettingsConfig.feature_view_name,
+        feature_group_name=hopsworksSettingsConfig.feature_group_name,
+        feature_group_version=hopsworksSettingsConfig.feature_group_version,
+        start_datetime=meteostatSettingsConfig.start_date,
+        end_datetime=meteostatSettingsConfig.end_date,
+    )
+
+    logger.info('Creating a feature view with basic features.')
+    feature_view_manager.create_feature_view()

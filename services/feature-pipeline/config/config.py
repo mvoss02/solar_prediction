@@ -57,6 +57,7 @@ class HopsworksSettingsConfig(BaseSettings):
     feature_group_primary_keys: list[str]
     feature_group_description: str
     feature_group_event_time: str
+    feature_view_name: str
 
 
 hopsworksSettingsConfig = HopsworksSettingsConfig()

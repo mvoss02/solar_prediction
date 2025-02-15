@@ -1,9 +1,10 @@
 import hopsworks
 import polars as pl
+from hsfs.feature_view import FeatureView
 from loguru import logger
 
 
-class HopsworksFeatureManager:
+class HopsworksFeatureGroupManager:
     """
     A class to manage feature groups and feature views in the Hopsworks Feature Store
     """
@@ -187,4 +188,91 @@ class HopsworksFeatureManager:
             logger.error(
                 f'Failed to insert data into feature group {self.feature_group_name}'
             )
+            raise
+
+
+class HopsworksFeatureViewManager:
+    def __init__(
+        self,
+        api_key: str,
+        project_name: str,
+        feature_group_name: str,
+        feature_group_version: int,
+        feature_view_name: str,
+        start_datetime: str,
+        end_datetime: str,
+    ):
+        """
+        Establish a connection to the Hopsworks Feature Store and set up the feature view
+        """
+        self._feature_group_name = feature_group_name
+        self._feature_group_version = feature_group_version
+        self._feature_view_name = feature_view_name
+        self.start_datetime = start_datetime
+        self.end_datetime = end_datetime
+
+        # Establish a connection to the Hopsworks Feature Store
+        logger.info(f'Logging in to Hopsworks project {project_name}')
+        project = hopsworks.login(project=project_name, api_key_value=api_key)
+        self._feature_store = project.get_feature_store()
+        self._feature_group = self._feature_store.get_feature_group(
+            self._feature_group_name, self._feature_group_version
+        )
+
+    def create_feature_view(self, query: str = None) -> FeatureView:
+        """
+        Create a feature view in the Hopsworks Feature Store
+
+        Args:
+            feature_view_name (str): The name of the feature view
+            query (str): The SQL query to generate the feature view
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If the feature view fails to be created
+
+        """
+        try:
+            # If no query is provided, select all columns from the feature group
+            query = self._feature_group.select_all()
+
+            # Create the feature view
+            feature_view = self._feature_store.create_feature_view(
+                name=self._feature_view_name,
+                description=f'Feature view for {self._feature_group_name}',
+                query=query,
+            )
+            logger.info(f'Successfully created feature view {self._feature_view_name}')
+
+            return feature_view
+        except:
+            logger.error(f'Failed to create feature view {self._feature_view_name}')
+            raise
+
+    def get_feature_view(self) -> FeatureView:
+        """
+        Get a feature view from the Hopsworks Feature Store
+
+        Args:
+            feature_view_name (str): The name of the feature view
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If the feature view fails to be retrieved
+
+        """
+        try:
+            # Get the feature view
+            feature_view = self._feature_store.get_feature_view(self._feature_view_name)
+            logger.info(
+                f'Successfully retrieved feature view {self._feature_view_name}'
+            )
+
+            return feature_view
+        except Exception:
+            logger.error(f'Failed to retrieve feature view {self._feature_view_name}')
             raise
