@@ -73,7 +73,8 @@ uv init NAME_OF_SERVICE
 ```
 
 2. Packages
-   2.1. Creation of package
+
+2.1. Creation of package
 
 ```bash
 uv init --lib MY_PACKAGE_NAME
