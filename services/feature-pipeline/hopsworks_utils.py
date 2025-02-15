@@ -45,6 +45,7 @@ class HopsworksFeatureManager:
                 'histograms': True,
                 'correlations': True,
             },
+            time_travel_format='DATE',
         )
         logger.info(
             f'Successfully connected to feature group {feature_group_name} version {feature_group_version}'
@@ -71,7 +72,14 @@ class HopsworksFeatureManager:
             # Convert timestamp to date if needed
             pandas_df['date'] = pandas_df['date'].dt.date
 
-            self._feature_group.insert(pandas_df)
+            # Insert data into the feature group
+            self._feature_group.insert(
+                pandas_df,
+                write_options={
+                    'wait_for_job': True,
+                    'overwrite': False,
+                },
+            )
             logger.info(
                 f'Successfully inserted data into feature group {self.feature_group_name}'
             )
