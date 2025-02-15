@@ -4,7 +4,7 @@ from etl.utils import delete_file
 from loguru import logger
 
 
-def pipeline():
+def pipeline() -> None:
     """
     The main function that orchestrates the feature pipeline.
     """

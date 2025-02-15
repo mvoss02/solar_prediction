@@ -28,9 +28,7 @@ class MeteostatSettingsConfig(BaseSettings):
     )
 
     meteostat_endpoint: str
-    station_id: str
-    start_date: str
-    end_date: str
+    station_id: int
     table_name: str
     yaml_config_file: str
     output_path: str

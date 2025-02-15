@@ -40,6 +40,11 @@ class HopsworksFeatureManager:
             primary_key=feature_group_primary_keys,
             event_time=feature_group_event_time,
             online_enabled=False,
+            statistics_config={
+                'enabled': True,
+                'histograms': True,
+                'correlations': True,
+            },
         )
         logger.info(
             f'Successfully connected to feature group {feature_group_name} version {feature_group_version}'
@@ -167,16 +172,8 @@ class HopsworksFeatureManager:
                     description['name'], description['description']
                 )
 
-            # Update statistics.
-            self._feature_group.statistics_config = {
-                'enabled': True,
-                'histograms': True,
-                'correlations': True,
-            }
-            self._feature_group.update_statistics_config()
-            self._feature_group.compute_statistics()
             logger.info(
-                f'Successfully updated feature descriptions and statistics for feature group {self.feature_group_name}'
+                f'Successfully updated feature descriptions for feature group {self.feature_group_name}'
             )
         except:
             logger.error(

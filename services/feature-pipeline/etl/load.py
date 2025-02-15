@@ -23,8 +23,8 @@ def load_data_into_feature_group(
 
     Raises:
         Exception: If the data fails to be loaded into the feature group
-
     """
+
     logger.info(
         f'Creating HopsworksFeatureGroupManager for feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}'
     )
