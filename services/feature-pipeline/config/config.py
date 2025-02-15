@@ -1,5 +1,7 @@
+from datetime import datetime, timedelta
 from pathlib import Path
 
+from pydantic import computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Get the config directory
@@ -32,6 +34,15 @@ class MeteostatSettingsConfig(BaseSettings):
     table_name: str
     yaml_config_file: str
     output_path: str
+
+    # Add computed fields instead of hard coding values in the settings file
+    @computed_field
+    def start_date(self) -> str:
+        return (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
+
+    @computed_field
+    def end_date(self) -> str:
+        return datetime.now().strftime('%Y-%m-%d')
 
 
 meteostatSettingsConfig = MeteostatSettingsConfig()
