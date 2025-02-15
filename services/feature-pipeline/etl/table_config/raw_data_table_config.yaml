@@ -1,0 +1,25 @@
+WeatherData:
+  columns:
+    - date
+    - tavg
+    - tmin
+    - tmax
+    - prcp
+    - snow
+    - wdir
+    - wspd
+    - wpgt
+    - pres
+    - tsun
+  datatypes:
+    date: String
+    tavg: Float32
+    tmin: Float32
+    tmax: Float32
+    prcp: Float32
+    snow: Float32
+    wdir: Float32
+    wspd: Float32
+    wpgt: Float32
+    pres: Float32
+    tsun: Int16

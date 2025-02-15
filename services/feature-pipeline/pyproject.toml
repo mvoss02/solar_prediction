@@ -1,0 +1,13 @@
+[project]
+name = "feature-pipeline"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "hopsworks>=4.1.8",
+    "loguru>=0.7.3",
+    "polars>=1.22.0",
+    "pydantic-settings>=2.7.1",
+    "requests>=2.32.3",
+]
