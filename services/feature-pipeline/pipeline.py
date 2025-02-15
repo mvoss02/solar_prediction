@@ -1,4 +1,6 @@
+from config.config import meteostatSettingsConfig
 from etl import extract, load, transform
+from etl.utils import delete_file
 from loguru import logger
 
 
@@ -16,6 +18,9 @@ def pipeline():
 
     logger.info('Loading the transformed data into the Feature Store.')
     load.load_data_into_feature_group(data=transformed_data)
+
+    logger.info('Deleting the extracted data file.')
+    delete_file(file_path=meteostatSettingsConfig.output_path)
 
     logger.info('Successfully completed the feature pipeline.')
 

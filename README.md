@@ -19,6 +19,7 @@ cd solar_prediction
 - uv -> An extremely fast Python package and project manager, written in Rust.
 - ruff -> An extremely fast Python linter and code formatter, written in Rust.
 - pre-commit
+- Hopsworks -> Feature Store
 
 ## Requirements Installation
 

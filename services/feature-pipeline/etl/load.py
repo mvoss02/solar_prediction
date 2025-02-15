@@ -1,6 +1,6 @@
 import polars as pl
 from config.config import hopsworksCredentialsConfig, hopsworksSettingsConfig
-from hopsworks_utils import HopsworksFeatureGroupManager
+from hopsworks_utils import HopsworksFeatureManager
 from loguru import logger
 
 
@@ -28,7 +28,7 @@ def load_data_into_feature_group(
     logger.info(
         f'Creating HopsworksFeatureGroupManager for feature group {hopsworksSettingsConfig.feature_group_name} version {hopsworksSettingsConfig.feature_group_version}'
     )
-    feature_group_manager = HopsworksFeatureGroupManager(
+    feature_group_manager = HopsworksFeatureManager(
         api_key=hopsworksCredentialsConfig.api_key,
         project_name=hopsworksCredentialsConfig.project_name,
         feature_group_name=hopsworksSettingsConfig.feature_group_name,

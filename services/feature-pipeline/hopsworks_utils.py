@@ -3,7 +3,7 @@ import polars as pl
 from loguru import logger
 
 
-class HopsworksFeatureGroupManager:
+class HopsworksFeatureManager:
     """
     A class to manage feature groups and feature views in the Hopsworks Feature Store
     """
